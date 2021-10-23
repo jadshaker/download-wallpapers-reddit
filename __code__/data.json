@@ -1,0 +1,10 @@
+{
+  "downloadPath": "/",
+  "showBrowser": true,
+  "subredditLinks": ["https://reddit.com/r/wallpaper/top/"],
+  "maximumNumberOfImagesPerSubreddit": 10,
+  "minimumResolution": {
+    "width": 1920,
+    "height": 1080
+  }
+}
