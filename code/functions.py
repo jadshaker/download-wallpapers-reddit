@@ -1,3 +1,4 @@
+from re import search
 from selenium.webdriver import Chrome
 from colorama import init, Fore, Back, Style
 from selenium.webdriver.chrome.options import Options
@@ -123,3 +124,31 @@ def initiate_driver(headless: bool = False, logs: bool = True, switches: bool = 
         options.add_argument(profile_path)
 
     return Chrome(options=options)
+
+
+def adjust_image_name(image_name: str) -> str:
+    """
+    This function remove extra characters from image name
+    - Required - image_name : image name (str)
+    """
+
+    # from re import search
+
+    # try to delete text between brackets ([])
+    try:
+        image_name = image_name[
+            0:search('\[', image_name).span()[0]
+        ] + image_name[search('\]', image_name).span()[1]:]
+    except:
+        pass
+
+    # try to remove text between paranthesis (())
+    try:
+        image_name = image_name[
+            0:search('\(', image_name).span()[0]
+        ] + image_name[search('\)', image_name).span()[1]:]
+
+    except:
+        pass
+
+    return image_name
