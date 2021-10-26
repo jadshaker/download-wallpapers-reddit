@@ -1,0 +1,11 @@
+{
+  "downloadPath": "D:/wallpapers",
+  "showBrowser": true,
+  "subredditLinks": [
+    "https://reddit.com/r/wallpaper/top/",
+    "https://reddit.com/r/carporn/top/"
+  ],
+  "maxImagesInSubreddit": 3,
+  "minimumWidth": 1920,
+  "minimumHeight": 1080
+}
