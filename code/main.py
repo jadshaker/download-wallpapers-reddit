@@ -1,6 +1,5 @@
 # library imports
 import requests
-from os import remove
 from PIL import Image
 from json import load
 
@@ -11,6 +10,7 @@ from functions import initiate_driver, adjust_image_name
 
 
 # TODO print progress bar
+# TODO Create default data.json and add data to it (try tk)
 
 
 if __name__ == '__main__':
