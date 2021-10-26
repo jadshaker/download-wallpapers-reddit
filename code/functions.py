@@ -137,18 +137,22 @@ def adjust_image_name(image_name: str) -> str:
     # try to delete text between brackets ([])
     try:
         image_name = image_name[
-            0:search('\[', image_name).span()[0]
-        ] + image_name[search('\]', image_name).span()[1]:]
+            0:search(r'\[', image_name).span()[0]
+        ] + image_name[search(r'\]', image_name).span()[1]:]
     except:
         pass
 
     # try to remove text between paranthesis (())
     try:
         image_name = image_name[
-            0:search('\(', image_name).span()[0]
-        ] + image_name[search('\)', image_name).span()[1]:]
+            0:search(r'\(', image_name).span()[0]
+        ] + image_name[search(r'\)', image_name).span()[1]:]
 
     except:
         pass
+
+    # remove invalid characters
+    for char in '\/:*?"<>|':
+        image_name = image_name.replace(char, '')
 
     return image_name
