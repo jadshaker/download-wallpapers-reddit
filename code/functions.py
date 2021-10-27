@@ -74,22 +74,22 @@ def styled(text: str, fore: str = 'white', back: str = 'black', style: str = 'no
 def print_progress_bar(iteration: int, total: int, prefix: str = '', suffix: str = '', decimals: int = 1, length: int = 100, fill: str = '█', end: str = '\r') -> str:
     """
     This function prints a progress bar and returns the current bar
-    iteration   - Required  : current iteration (int)
-    total       - Required  : total iterations (int)
-    prefix      - Optional  : prefix string (str)
-    suffix      - Optional  : suffix string (str)
-    decimals    - Optional  : positive number of decimals in percent complete (int)
-    length      - Optional  : character length of bar (int)
-    fill        - Optional  : bar fill character (str)
-    end         - Optional  : end character (str)
+    - Required - iteration : current iteration (int)
+    - Required - total : total iterations (int)
+    - Optional - prefix : prefix string (str)
+    - Optional - suffix : suffix string (str)
+    - Optional - decimals : positive number of decimals in percent complete (int)
+    - Optional - length : character length of bar (int)
+    - Optional - fill : bar fill character (str)
+    - Optional - end : end character (str)
     """
 
     filledLength = length * iteration // total
     percent = f'{(100 * iteration  / float(total)):.{decimals}f}'
 
-    bar = fill * filledLength + '-' * (length - filledLength)
+    bar = fill * filledLength + '_' * (length - filledLength)
 
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=end)
+    print(f'\r{prefix} {bar} {percent}% {suffix}', end=end)
 
     # Print New Line on Complete
     if iteration == total:
