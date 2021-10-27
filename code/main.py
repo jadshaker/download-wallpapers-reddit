@@ -1,31 +1,34 @@
 # library imports
 import requests
+from os import remove
 from PIL import Image
 from json import load
 
 # file imports
 import selectors
 from constants import HREF, WB
-from functions import initiate_driver, adjust_image_name
+from functions import initiate_driver, adjust_image_name, print_progress_bar, styled
 
 
-# TODO print progress bar
 # TODO Create default data.json and add data to it (try tk)
+# TODO print grey █ instead of white █
 
 
 if __name__ == '__main__':
-
     # extract data from data.json
     download_path, show_browser, subreddit_links, max_images_in_subreddit, minimum_width, minimum_height = load(
         open('./data.json')
     ).values()
 
+    print(styled(f'Downloading wallpapers to {download_path}', 'green'))
+
     # initiate chrome driver
     driver = initiate_driver(not show_browser, False, False)
+    if not show_browser:
+        print(styled('Driver running in the background', 'yellow'))
 
     # walk through subreddits
     for subreddit_link in subreddit_links:
-
         driver.get(subreddit_link)
 
         # get max post links
@@ -33,8 +36,15 @@ if __name__ == '__main__':
             post_link.get_attribute(HREF) for post_link in driver.find_elements_by_css_selector(selectors.post)
         ][:max_images_in_subreddit]
 
-        for post_link in posts_links:
+        print(styled(
+            f'\nCollected {len(posts_links)} wallpapers from {subreddit_link}', 'green'
+        ))
 
+        for post_link in posts_links:
+            print_progress_bar(
+                2, 10, '', 'Opening image in driver', 1, 10,
+                styled('█')
+            )
             driver.get(post_link)
 
             # get image name and link from image post
@@ -49,6 +59,12 @@ if __name__ == '__main__':
                 ).get_attribute(HREF)
             ]
 
+            styled_image_name = styled(f"'{image_name[:10]}...'", 'Cyan')
+            print_progress_bar(
+                4, 10, '', f'Downloading {styled_image_name}       ', 1, 10,
+                styled('█')
+            )
+
             image_path = f'{download_path}/{image_name}.png'
 
             # download image from image link
@@ -56,11 +72,33 @@ if __name__ == '__main__':
             image.write(requests.get(image_link).content)
             image.close()
 
+            print_progress_bar(
+                6, 10, '', f'Checking {styled_image_name} resolution', 1, 10,
+                styled('█')
+            )
+
             # delete image with less than minimum resolution
             width, height = Image.open(image_path).size
             if width < minimum_width or height < minimum_height:
-                print(image_name)
-                # remove(image_path)
+                remove(image_path)
+                print_progress_bar(
+                    8, 10, '', f'{styled_image_name} doesn\'t meet minimum resolution', 1, 10,
+                    styled('█')
+                )
+                print_progress_bar(
+                    10, 10, '', f'Successfully deleted {styled_image_name}', 1, 10,
+                    styled('█')
+                )
+
+            else:
+                print_progress_bar(
+                    8, 10, '', f'{styled_image_name} meets minimum resolution', 1, 10,
+                    styled('█')
+                )
+                print_progress_bar(
+                    10, 10, '', f'Successfully downloaded {styled_image_name}', 1, 10,
+                    styled('█')
+                )
 
     # quit driver
     driver.quit()
