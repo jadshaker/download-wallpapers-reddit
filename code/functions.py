@@ -158,7 +158,7 @@ def get_json_data() -> dict:
 
     try:
         download_path, show_browser, subreddits, max_images_in_subreddit, minimum_width, minimum_height = load(
-            open('./data.json')
+            open('C:/dev/download-wallpapers-reddit/code/data.json')
         ).values()
 
         data = {
@@ -230,6 +230,6 @@ def get_json_data() -> dict:
             'minimumHeight': minimum_height
         }
 
-        dump(data, open('./data.json', 'w'))
+        dump(data, open('C:/dev/download-wallpapers-reddit/code/data.json', 'w'))
 
     return data.values()
