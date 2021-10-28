@@ -1,4 +1,5 @@
 from re import search
+from json import dump, load
 from selenium.webdriver import Chrome
 from colorama import init, Fore, Back, Style
 from selenium.webdriver.chrome.options import Options
@@ -12,8 +13,6 @@ def styled(text: str, fore: str = 'white', back: str = 'black', style: str = 'no
     - back      - Optional : output background (str)
     - style     - Optional : output style (str)
     """
-
-    # from colorama import init, Fore, Back, Style
 
     fore = fore.upper()
     back = back.upper()
@@ -91,7 +90,6 @@ def print_progress_bar(iteration: int, total: int, prefix: str = '', suffix: str
 
     print(f'\r{prefix} {bar} {percent}% {suffix}', end=end)
 
-    # Print New Line on Complete
     if iteration == total:
         print()
 
@@ -105,9 +103,6 @@ def initiate_driver(headless: bool = False, logs: bool = True, switches: bool = 
     - Optional - use_profile    : use chrome profile (bool)
     - Optional - profile_path   : profile path from chrome (str)
     """
-
-    # from selenium.webdriver import Chrome
-    # from selenium.webdriver.chrome.options import Options
 
     options = Options()
     if headless:
@@ -132,8 +127,6 @@ def adjust_image_name(image_name: str) -> str:
     - Required - image_name : image name (str)
     """
 
-    # from re import search
-
     # try to delete text between brackets ([])
     try:
         image_name = image_name[
@@ -156,3 +149,87 @@ def adjust_image_name(image_name: str) -> str:
         image_name = image_name.replace(char, '')
 
     return image_name
+
+
+def get_json_data() -> dict:
+    """
+    This function gets data from data.json file if available, or creates data.json with user defined values
+    """
+
+    try:
+        download_path, show_browser, subreddits, max_images_in_subreddit, minimum_width, minimum_height = load(
+            open('./data.json')
+        ).values()
+
+        data = {
+            'downloadPath': download_path,
+            'showBrowser': show_browser,
+            'subreddits': subreddits,
+            'maxImagesInSubreddit': max_images_in_subreddit,
+            'minimumWidth': minimum_width,
+            'minimumHeight': minimum_height
+        }
+
+    except:
+        download_path = input('Please input the wallpapers folder path: ')
+
+        while True:
+            show_browser = input(
+                'Would you like to show the browser while dowloading images? (yes/no): '
+            ).lower()
+
+            if show_browser == 'yes':
+                show_browser = True
+                break
+
+            elif show_browser == 'no':
+                show_browser = False
+                break
+
+            else:
+                print('Please try again')
+
+        subreddits = [
+            subreddit.strip() for subreddit in input(
+                'Enter subreddit names seperated by commas(,):\n'
+            ).split(',')
+        ]
+
+        while True:
+            try:
+                max_images_in_subreddit = int(
+                    input('Maximum number of images per subreddit: ')
+                )
+                break
+
+            except:
+                print('Please try again')
+
+        while True:
+            try:
+                minimum_width = int(input('Minimum width of image: '))
+                break
+
+            except:
+                print('Please try again')
+
+        while True:
+            try:
+                minimum_height = int(input('Minimum height of image: '))
+                break
+
+            except:
+                print('Please try again')
+
+        data = {
+            'downloadPath': download_path,
+            'showBrowser': show_browser,
+            'subreddits': subreddits,
+            'maxImagesInSubreddit': max_images_in_subreddit,
+            'minimumWidth': minimum_width,
+            'minimumHeight': minimum_height
+        }
+
+        dump(data, open('./data.json', 'w'))
+
+    return data.values()

@@ -2,12 +2,11 @@
 import requests
 from os import remove
 from PIL import Image
-from json import load
 
 # file imports
 import selectors
-from constants import HREF, WB
-from functions import initiate_driver, adjust_image_name, print_progress_bar, styled
+from constants import HREF, RED, WB, GREEN, YELLOW, CYAN
+from functions import initiate_driver, adjust_image_name, print_progress_bar, styled, get_json_data
 
 
 # TODO Create default data.json and add data to it (try tk)
@@ -16,20 +15,18 @@ from functions import initiate_driver, adjust_image_name, print_progress_bar, st
 
 if __name__ == '__main__':
     # extract data from data.json
-    download_path, show_browser, subreddit_links, max_images_in_subreddit, minimum_width, minimum_height = load(
-        open('./data.json')
-    ).values()
+    download_path, show_browser, subreddits, max_images_in_subreddit, minimum_width, minimum_height = get_json_data()
 
-    print(styled(f'Downloading wallpapers to {download_path}', 'green'))
+    print(styled(f'Downloading wallpapers to {download_path}', GREEN))
 
     # initiate chrome driver
     driver = initiate_driver(not show_browser, False, False)
     if not show_browser:
-        print(styled('Driver running in the background', 'yellow'))
+        print(styled('Driver running in the background', YELLOW))
 
     # walk through subreddits
-    for subreddit_link in subreddit_links:
-        driver.get(subreddit_link)
+    for subreddit in subreddits:
+        driver.get(f'https://reddit.com/r/{subreddit}/top/')
 
         # get max post links
         posts_links = [
@@ -37,14 +34,12 @@ if __name__ == '__main__':
         ][:max_images_in_subreddit]
 
         print(styled(
-            f'\nCollected {len(posts_links)} wallpapers from {subreddit_link}', 'green'
+            f'\nCollected {len(posts_links)} wallpapers from {subreddit}', GREEN
         ))
 
         for post_link in posts_links:
-            print_progress_bar(
-                2, 10, '', 'Opening image in driver', 1, 10,
-                styled('█')
-            )
+
+            print_progress_bar(2, 10, '', 'Opening image in driver', 1, 10)
             driver.get(post_link)
 
             # get image name and link from image post
@@ -59,10 +54,9 @@ if __name__ == '__main__':
                 ).get_attribute(HREF)
             ]
 
-            styled_image_name = styled(f"'{image_name[:10]}...'", 'Cyan')
+            styled_image_name = styled(f"'{image_name[:10]}...'", CYAN)
             print_progress_bar(
-                4, 10, '', f'Downloading {styled_image_name}       ', 1, 10,
-                styled('█')
+                4, 10, '', f'Downloading {styled_image_name}       ', 1, 10
             )
 
             image_path = f'{download_path}/{image_name}.png'
@@ -74,7 +68,6 @@ if __name__ == '__main__':
 
             print_progress_bar(
                 6, 10, '', f'Checking {styled_image_name} resolution', 1, 10,
-                styled('█')
             )
 
             # delete image with less than minimum resolution
@@ -82,22 +75,18 @@ if __name__ == '__main__':
             if width < minimum_width or height < minimum_height:
                 remove(image_path)
                 print_progress_bar(
-                    8, 10, '', f'{styled_image_name} doesn\'t meet minimum resolution', 1, 10,
-                    styled('█')
+                    8, 10, '', f'{styled_image_name} doesn\'t meet minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f'Successfully deleted {styled_image_name}', 1, 10,
-                    styled('█')
+                    10, 10, '', f"{styled('Successfully deleted', RED)} {styled_image_name}                ", 1, 10
                 )
 
             else:
                 print_progress_bar(
-                    8, 10, '', f'{styled_image_name} meets minimum resolution', 1, 10,
-                    styled('█')
+                    8, 10, '', f'{styled_image_name} meets minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f'Successfully downloaded {styled_image_name}', 1, 10,
-                    styled('█')
+                    10, 10, '', f"{styled('Successfully downloaded', GREEN)} {styled_image_name}", 1, 10
                 )
 
     # quit driver
