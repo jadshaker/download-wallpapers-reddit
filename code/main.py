@@ -77,7 +77,7 @@ if __name__ == '__main__':
                     8, 10, '', f'{styled_image_name} doesn\'t meet minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f"{styled('Successfully deleted', RED)} {styled_image_name} {styled(f'({minimum_width}x{height})', YELLOW)}", 1, 10
+                    10, 10, '', f"{styled('Successfully deleted', RED)} {styled_image_name} {styled(f'({minimum_width}x{height})', RED)}", 1, 10
                 )
 
             else:
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                     8, 10, '', f'{styled_image_name} meets minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f"{styled('Successfully downloaded', GREEN)} {styled_image_name} {styled(f'({minimum_width}x{height})', YELLOW)}", 1, 10
+                    10, 10, '', f"{styled('Successfully downloaded', GREEN)} {styled_image_name} {styled(f'({minimum_width}x{height})', GREEN)}", 1, 10
                 )
 
     # quit driver
