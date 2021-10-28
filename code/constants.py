@@ -1,2 +1,6 @@
 HREF = 'href'
 WB = 'wb'
+GREEN = 'green'
+YELLOW = 'yellow'
+CYAN = 'cyan'
+RED = 'red'
