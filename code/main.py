@@ -33,7 +33,7 @@ if __name__ == '__main__':
         ][:max_images_in_subreddit]
 
         print(styled(
-            f'\nCollected {len(posts_links)} wallpapers from {subreddit}', GREEN
+            f'\nCollected {len(posts_links)} wallpapers from r/{subreddit}', GREEN
         ))
 
         for post_link in posts_links:
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                     8, 10, '', f'{styled_image_name} doesn\'t meet minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f"{styled('Successfully deleted', RED)} {styled_image_name}                ", 1, 10
+                    10, 10, '', f"{styled('Successfully deleted', RED)} {styled_image_name} {styled(f'({minimum_width}x{height})', YELLOW)}", 1, 10
                 )
 
             else:
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                     8, 10, '', f'{styled_image_name} meets minimum resolution', 1, 10
                 )
                 print_progress_bar(
-                    10, 10, '', f"{styled('Successfully downloaded', GREEN)} {styled_image_name}", 1, 10
+                    10, 10, '', f"{styled('Successfully downloaded', GREEN)} {styled_image_name} {styled(f'({minimum_width}x{height})', YELLOW)}", 1, 10
                 )
 
     # quit driver
