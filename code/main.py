@@ -9,9 +9,6 @@ from constants import HREF, RED, WB, GREEN, YELLOW, CYAN
 from functions import initiate_driver, adjust_image_name, print_progress_bar, styled, get_json_data
 
 
-# TODO print grey █ instead of white █
-
-
 if __name__ == '__main__':
     # extract data from data.json
     download_path, show_browser, subreddits, max_images_in_subreddit, minimum_width, minimum_height = get_json_data()
