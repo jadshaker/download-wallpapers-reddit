@@ -2,6 +2,7 @@
 import requests
 from os import remove
 from PIL import Image
+from selenium.webdriver.common.by import By
 
 # file imports
 import selectors
@@ -26,7 +27,7 @@ if __name__ == '__main__':
 
         # get max post links
         posts_links = [
-            post_link.get_attribute(HREF) for post_link in driver.find_elements_by_css_selector(selectors.post)
+            post_link.get_attribute(HREF) for post_link in driver.find_element(By.CSS_SELECTOR, (selectors.post))
         ][:max_images_in_subreddit]
 
         print(styled(
@@ -41,12 +42,12 @@ if __name__ == '__main__':
             # get image name and link from image post
             image_name, image_link = [
                 adjust_image_name(
-                    driver.find_element_by_css_selector(
-                        selectors.image_name
+                    driver.find_element(
+                        By.CSS_SELECTOR, selectors.image_name
                     ).text
                 ).strip(),
-                driver.find_element_by_css_selector(
-                    selectors.image_link
+                driver.find_element(
+                    By.CSS_SELECTOR, selectors.image_link
                 ).get_attribute(HREF)
             ]
 
