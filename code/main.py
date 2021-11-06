@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
         # get max post links
         posts_links = [
-            post_link.get_attribute(HREF) for post_link in driver.find_element(By.CSS_SELECTOR, (selectors.post))
+            post_link.get_attribute(HREF) for post_link in driver.find_elements(By.CSS_SELECTOR, (selectors.post))
         ][:max_images_in_subreddit]
 
         print(styled(
